@@ -1,68 +1,267 @@
+# Sistema de Gestión y Venta de Entradas para Conciertos
 
-# concierto
-=======
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Descripción General
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es una aplicación web desarrollada en Laravel que permite gestionar la venta de entradas para conciertos. El sistema facilita la administración de usuarios, compradores, recaudos y reservas de asientos, además de generar y enviar tickets electrónicos en formato PDF.
 
-## About Laravel
+Su objetivo principal es automatizar el proceso de venta de entradas, mejorar el control de los eventos y mantener un registro organizado de las operaciones realizadas.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Características Principales
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Administración de usuarios.
+- Gestión de roles y permisos.
+- Venta individual de entradas.
+- Venta masiva de entradas.
+- Control de disponibilidad de asientos.
+- Registro de compradores.
+- Generación automática de tickets en PDF.
+- Envío de tickets por correo electrónico.
+- Consulta de reservas y ventas.
+- Gestión de recaudos.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tecnologías Utilizadas
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Backend
 
-## Laravel Sponsors
+- PHP
+- Laravel
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Base de Datos
 
-### Premium Partners
+- MySQL
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+### Frontend
 
-## Contributing
+- HTML
+- CSS
+- JavaScript
+- Blade Templates
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Librerías
 
-## Code of Conduct
+- DomPDF
+- Laravel Mail
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Estructura General del Proyecto
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```text
+app/
+├── Http/
+│   └── Controllers/
+│       ├── UserController.php
+│       ├── SeatController.php
+│       ├── SeatSoldController.php
+│       └── CollectionController.php
 
-## License
+├── Models/
+│   ├── Seat.php
+│   ├── Buyer.php
+│   ├── SeatSold.php
+│   ├── UsersGmos.php
+│   ├── RolesGmos.php
+│   └── Collection.php
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+routes/
+└── web.php
 
+resources/
+└── views/
+```
+
+---
+
+## Funcionamiento General
+
+El sistema sigue la arquitectura MVC (Modelo - Vista - Controlador).
+
+```text
+Usuario
+   ↓
+Ruta
+   ↓
+Controlador
+   ↓
+Modelo
+   ↓
+Base de Datos
+   ↓
+Vista o Respuesta
+```
+
+---
+
+## Proceso de Venta
+
+Cuando un cliente realiza una compra, el sistema ejecuta las siguientes acciones:
+
+1. Registra la información del comprador.
+2. Verifica la disponibilidad del asiento.
+3. Registra la venta en la base de datos.
+4. Actualiza el estado del asiento a vendido.
+5. Genera un ticket en formato PDF.
+6. Envía el ticket al correo electrónico del comprador.
+
+```text
+Cliente selecciona asiento
+           ↓
+Registro de comprador
+           ↓
+Registro de venta
+           ↓
+Actualización del asiento
+           ↓
+Generación de PDF
+           ↓
+Envío por correo
+```
+
+---
+
+## Gestión de Usuarios
+
+El sistema permite:
+
+- Iniciar sesión.
+- Cerrar sesión.
+- Crear usuarios.
+- Editar usuarios.
+- Eliminar usuarios.
+- Asignar roles.
+
+Dependiendo del rol asignado, el usuario tendrá acceso a determinadas funcionalidades administrativas.
+
+---
+
+## Gestión de Asientos
+
+Cada asiento almacena información como:
+
+- Número de asiento.
+- Ubicación.
+- Precio.
+- Estado de disponibilidad.
+
+| Estado | Descripción |
+|---------|-------------|
+| 0 | Disponible |
+| 1 | Vendido |
+
+---
+
+## Gestión de Compradores
+
+La información registrada para cada comprador incluye:
+
+- Nombre completo.
+- Correo electrónico.
+- Número telefónico.
+- Dirección.
+
+Estos datos son utilizados para generar y enviar los tickets correspondientes.
+
+---
+
+## Gestión de Recaudos
+
+El módulo de recaudos permite registrar:
+
+- Valor recaudado.
+- Método de pago.
+- Usuario responsable.
+- Fecha de registro.
+
+Esta información facilita el seguimiento de los ingresos generados por las ventas.
+
+---
+
+## Generación de Tickets
+
+Después de completar una venta, el sistema genera automáticamente un ticket digital que contiene:
+
+- Datos del comprador.
+- Información del asiento.
+- Valor pagado.
+- Fecha de compra.
+
+El ticket puede descargarse o enviarse directamente al correo electrónico del cliente.
+
+---
+
+## Seguridad
+
+El sistema utiliza:
+
+- Autenticación mediante sesiones.
+- Middleware para protección de rutas.
+- Control de acceso basado en roles.
+
+Esto garantiza que únicamente los usuarios autorizados puedan acceder a los módulos administrativos.
+
+---
+
+## Instalación
+
+### Clonar el repositorio
+
+```bash
+git clone URL_DEL_REPOSITORIO
+```
+
+### Ingresar al directorio del proyecto
+
+```bash
+cd concierto-master
+```
+
+### Instalar dependencias
+
+```bash
+composer install
+```
+
+### Configurar variables de entorno
+
+```bash
+cp .env.example .env
+```
+
+### Generar la clave de Laravel
+
+```bash
+php artisan key:generate
+```
+
+### Ejecutar migraciones
+
+```bash
+php artisan migrate
+```
+
+### Iniciar el servidor local
+
+```bash
+php artisan serve
+```
+
+---
+
+## Posibles Mejoras
+
+- Recuperación de contraseña.
+- Integración con pasarelas de pago.
+- Reportes estadísticos.
+- Auditoría de usuarios.
+- Optimización de consultas a la base de datos.
+- Implementación de mejores prácticas de seguridad para contraseñas.
+
+---
+
+## Autor
+
+Proyecto desarrollado para la gestión y administración de eventos, permitiendo controlar ventas, compradores, recaudos y la generación automática de tickets electrónicos.
